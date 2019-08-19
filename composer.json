@@ -27,12 +27,20 @@
     "require": {
         "php":                       ">=5.3.1",
         "behat/mink":                "~1.7@dev",
-        "instaclick/php-webdriver":  "dev-master"
+        "kadse/php-webdriver":  "dev-master"
     },
 
     "require-dev": {
         "mink/driver-testsuite": "dev-master"
     },
+
+
+    "repositories": [
+      {
+        "type": "vcs",
+        "url": "git@github.com:kadse/php-webdriver.git"
+      }
+    ],
 
     "autoload": {
         "psr-4": {
