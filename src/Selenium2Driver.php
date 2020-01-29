@@ -74,6 +74,11 @@ class Selenium2Driver extends CoreDriver
      */
     public function __construct($browserName = 'firefox', $desiredCapabilities = null, $wdHost = 'http://localhost:4444/wd/hub')
     {
+        if ($browserName === 'firefox') {
+            $acceptInsecureCerts = array('acceptInsecureCerts' => TRUE);
+            $desiredCapabilities = array_merge($acceptInsecureCerts, $desiredCapabilities);
+        }
+
         $this->setBrowserName($browserName);
         $this->setDesiredCapabilities($desiredCapabilities);
         $this->setWebDriver(new WebDriver($wdHost));
