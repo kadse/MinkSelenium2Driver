@@ -27,7 +27,7 @@
     "require": {
         "php":                       ">=5.3.1",
         "behat/mink":                "~1.7@dev",
-        "kadse/php-webdriver":       "dev-master"
+        "kadse/php-webdriver":       "^2.0"
     },
 
     "require-dev": {
