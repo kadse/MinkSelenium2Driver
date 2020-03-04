@@ -17,6 +17,7 @@ use WebDriver\Exception\NoSuchElement;
 use WebDriver\Exception\UnknownError;
 use WebDriver\Exception;
 use WebDriver\Key;
+use WebDriver\Session;
 use WebDriver\WebDriver;
 
 /**
@@ -50,7 +51,7 @@ class Selenium2Driver extends CoreDriver
 
     /**
      * The WebDriverSession instance
-     * @var \WebDriver\Session
+     * @var Session
      */
     private $wdSession;
 
@@ -158,7 +159,7 @@ class Selenium2Driver extends CoreDriver
     /**
      * Gets the WebDriverSession instance
      *
-     * @return \WebDriver\Session
+     * @return Session
      */
     public function getWebDriverSession()
     {
@@ -516,6 +517,7 @@ class Selenium2Driver extends CoreDriver
         $node = $this->findElement($xpath);
         $text = $node->text();
         $text = (string) str_replace(array("\r", "\r\n", "\n"), ' ', $text);
+        $text = html_entity_decode($text, ENT_QUOTES, 'UTF-8');
 
         return $text;
     }
@@ -562,7 +564,7 @@ class Selenium2Driver extends CoreDriver
 
         if ('input' === $elementName && 'radio' === $elementType) {
             $script = <<<JS
-var node = {{ELEMENT}},
+var node = {;{ELEMENT}},
     value = null;
 
 var name = node.getAttribute('name');
@@ -588,7 +590,7 @@ JS;
         // even when it is a multiple select, so a custom retrieval is needed.
         if ('select' === $elementName && $element->attribute('multiple')) {
             $script = <<<JS
-var node = {{ELEMENT}},
+var node = {;{ELEMENT}},
     value = [];
 
 for (var i = 0; i < node.options.length; i++) {
@@ -868,7 +870,7 @@ JS;
     event.dataTransfer = {};
 
     element.dispatchEvent(event);
-}({{ELEMENT}}));
+}({;{ELEMENT}}))
 JS;
         $this->withSyn()->executeJsOnElement($source, $script);
 
@@ -886,7 +888,7 @@ JS;
     event.dataTransfer = {};
 
     element.dispatchEvent(event);
-}({{ELEMENT}}));
+}({;{ELEMENT}}))
 JS;
         $this->withSyn()->executeJsOnElement($destination, $script);
     }
@@ -1071,7 +1073,7 @@ XPATH;
     private function deselectAllOptions(Element $element)
     {
         $script = <<<JS
-var node = {{ELEMENT}};
+var node = {;{ELEMENT}}
 var i, l = node.options.length;
 for (i = 0; i < l; i++) {
     node.options[i].selected = false;
