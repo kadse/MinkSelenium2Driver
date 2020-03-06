@@ -517,7 +517,7 @@ class Selenium2Driver extends CoreDriver
         $node = $this->findElement($xpath);
         $text = $node->text();
         $text = (string) str_replace(array("\r", "\r\n", "\n"), ' ', $text);
-        $text = html_entity_decode($text, ENT_QUOTES, 'UTF-8');
+        $text = self::removeShyChars($text);
 
         return $text;
     }
@@ -1100,5 +1100,15 @@ JS;
 
             throw new DriverException(sprintf($message, $action, $xpath, $type));
         }
+    }
+
+    /**
+     * @param string $text
+     *
+     * @return string
+     */
+    private static function removeShyChars($text)
+    {
+        return strtr($text, array("\xAD" => '', "\xC2\xAD" => ''));
     }
 }
