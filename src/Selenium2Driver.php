@@ -564,7 +564,7 @@ class Selenium2Driver extends CoreDriver
 
         if ('input' === $elementName && 'radio' === $elementType) {
             $script = <<<JS
-var node = {;{ELEMENT}},
+var node = {{ELEMENT}},
     value = null;
 
 var name = node.getAttribute('name');
@@ -590,7 +590,7 @@ JS;
         // even when it is a multiple select, so a custom retrieval is needed.
         if ('select' === $elementName && $element->attribute('multiple')) {
             $script = <<<JS
-var node = {;{ELEMENT}},
+var node = {{ELEMENT}},
     value = [];
 
 for (var i = 0; i < node.options.length; i++) {
@@ -870,7 +870,7 @@ JS;
     event.dataTransfer = {};
 
     element.dispatchEvent(event);
-}({;{ELEMENT}}))
+}({{ELEMENT}}));
 JS;
         $this->withSyn()->executeJsOnElement($source, $script);
 
@@ -888,7 +888,7 @@ JS;
     event.dataTransfer = {};
 
     element.dispatchEvent(event);
-}({;{ELEMENT}}))
+}({{ELEMENT}}));
 JS;
         $this->withSyn()->executeJsOnElement($destination, $script);
     }
@@ -1073,7 +1073,7 @@ XPATH;
     private function deselectAllOptions(Element $element)
     {
         $script = <<<JS
-var node = {;{ELEMENT}}
+var node = {{ELEMENT}};
 var i, l = node.options.length;
 for (i = 0; i < l; i++) {
     node.options[i].selected = false;
